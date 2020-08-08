@@ -1,7 +1,8 @@
-package com.ryspay.onelabfinalproject
+package com.ryspay.onelabfinalproject.feature.unsplash.presentation.details
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.ryspay.onelabfinalproject.R
 
 class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

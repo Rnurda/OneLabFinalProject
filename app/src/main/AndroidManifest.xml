@@ -9,10 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DetailActivity"></activity>
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".PhotosListActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".feature.unsplash.presentation.details.DetailActivity"/>
+        <activity android:name=".feature.unsplash.presentation.search.SearchActivity" />
+        <activity android:name=".feature.unsplash.presentation.photosList.PhotosListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

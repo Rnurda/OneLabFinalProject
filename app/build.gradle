@@ -55,7 +55,13 @@ dependencies {
     //Recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     //Material Design
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.android.material:material:1.2.0'
 
+    // Koin AndroidX Scope feature
+    implementation "org.koin:koin-androidx-scope:2.1.6"
+    // Koin AndroidX ViewModel feature
+    implementation "org.koin:koin-androidx-viewmodel:2.1.6"
+    // Koin AndroidX Fragment Factory (unstable version)
+    implementation "org.koin:koin-androidx-fragment:2.1.6"
 
 }
