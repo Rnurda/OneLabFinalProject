@@ -2,9 +2,11 @@ package com.ryspay.onelabfinalproject.feature.unsplash.data.db
 
 import com.ryspay.onelabfinalproject.feature.unsplash.data.db.dao.PhotosDao
 import com.ryspay.onelabfinalproject.feature.unsplash.data.db.entity.PhotoLocal
+import kotlinx.coroutines.flow.Flow
 
 interface PhotosLocalDataSource {
     suspend fun savePhotos(photos: List<PhotoLocal>)
+    suspend fun getPhotos(): Flow<List<PhotoLocal>>
 }
 
 class RoomPhotosLocalDataSource(
@@ -13,4 +15,6 @@ class RoomPhotosLocalDataSource(
     override suspend fun savePhotos(photos: List<PhotoLocal>) {
         dao.savePhotos(photos)
     }
+
+    override suspend fun getPhotos(): Flow<List<PhotoLocal>> = dao.getPhotos()
 }

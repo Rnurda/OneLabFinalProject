@@ -9,7 +9,8 @@ const val PhotoLocalTable = "local_photo"
 data class PhotoLocal (
     @PrimaryKey
     val id: String,
-    val updatedAt: String,
+    val createdAt: String,
     val width: Int,
-    val height: Int
+    val height: Int,
+    val raw_url: String
 )

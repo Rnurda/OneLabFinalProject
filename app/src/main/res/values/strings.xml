@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">OneLabFinalProject</string>
     <string name="search">Search</string>
+    <string name="photo">photo</string>
 </resources>

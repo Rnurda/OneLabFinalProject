@@ -7,11 +7,14 @@ import com.ryspay.onelabfinalproject.feature.unsplash.data.db.RoomPhotosLocalDat
 import com.ryspay.onelabfinalproject.feature.unsplash.data.remote.PhotosRemoteDataSource
 import com.ryspay.onelabfinalproject.feature.unsplash.data.remote.RetrofitPhotosRemoteDataSource
 import com.ryspay.onelabfinalproject.feature.unsplash.domain.PhotosRepository
+import com.ryspay.onelabfinalproject.feature.unsplash.domain.usecases.GetPhotosUseCase
+import com.ryspay.onelabfinalproject.feature.unsplash.presentation.photosList.PhotosListViewModel
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,7 +36,7 @@ class ApiInterceptor: Interceptor{
 val mainModule = module {
     single {
         val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC)
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
         val client = OkHttpClient.Builder()
             .addInterceptor(ApiInterceptor())
@@ -69,4 +72,17 @@ val mainModule = module {
             remoteDataSource = get()
         )
     }
+
+    factory {
+        GetPhotosUseCase(
+            repository = get()
+        )
+    }
+
+    viewModel {
+        PhotosListViewModel(
+            getPhotosUseCase = get()
+        )
+    }
+
 }

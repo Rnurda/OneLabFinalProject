@@ -3,7 +3,7 @@ package com.ryspay.onelabfinalproject.feature.unsplash.data.remote.dto
 data class PhotoRemoteDTO(
     val color: String,
     val created_at: String,
-    val current_user_collections: List<Any>,
+    val current_user_collections: List<CurrentUserCollection>,
     val description: String,
     val height: Int,
     val id: String,
