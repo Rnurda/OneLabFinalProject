@@ -1,4 +1,8 @@
 package com.ryspay.onelabfinalproject.feature.unsplash.domain.entity
 
-class PhotoDomain {
-}
+data class PhotoDomain(
+    val id: String,
+    val created_at: String,
+    val height: Int,
+    val width: Int
+)

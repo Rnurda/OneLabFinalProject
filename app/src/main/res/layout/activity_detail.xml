@@ -8,7 +8,7 @@
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:src="@drawable/placeHolder"
+        tools:src="@drawable/place_holder"
         app:layout_constraintBottom_toTopOf="@id/constaraint_layout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
