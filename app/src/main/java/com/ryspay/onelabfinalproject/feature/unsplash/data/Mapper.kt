@@ -8,38 +8,38 @@ import com.ryspay.onelabfinalproject.feature.unsplash.domain.entity.PhotoDomain
 
 fun PhotoRemoteDTO.toDomainModel(): PhotoDomain {
     return PhotoDomain(
-        id = id,
-        height = height,
-        width = width,
-        created_at = created_at,
-        raw_url = urls.raw
+        id = id?:"-1",
+        height = height?:-1,
+        width = width?:-1,
+        created_at = created_at?:"",
+        raw_url = urls?.raw?:""
     )
 }
 
 fun DetailPhotoRemoteDTO.toDomainModel(): DetailPhotoDomain {
     return DetailPhotoDomain(
-        id = id,
-        aperture = exif.aperture,
-        description = description,
-        downloads = downloads,
-        likes = likes,
-        city = location.city,
-        country = location.country,
-        exposure_time = exif.exposure_time,
-        focal_length = exif.focal_length,
-        iso = exif.iso,
-        make = exif.make,
-        model = exif.model
+        id = id?:"-1",
+        aperture = exif?.aperture?:"",
+        description = description?:"",
+        downloads = downloads?:-1,
+        likes = likes?:-1,
+        city = location?.city?:"",
+        country = location?.country?:"",
+        exposure_time = exif?.exposure_time?:"",
+        focal_length = exif?.focal_length?:"",
+        iso = exif?.iso?:-1,
+        make = exif?.make?:"",
+        model = exif?.model?:""
     )
 }
 
 fun PhotoRemoteDTO.toLocalEntity(): PhotoLocal{
     return PhotoLocal(
-        id = id,
-        width = width,
-        height = height,
-        createdAt = created_at,
-        raw_url = urls.raw
+        id = id?:"-1",
+        width = width?:-1,
+        height = height?:-1,
+        createdAt = created_at?:"",
+        raw_url = urls?.raw?:""
     )
 }
 

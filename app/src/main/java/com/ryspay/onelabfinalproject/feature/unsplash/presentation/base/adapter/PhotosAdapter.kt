@@ -7,12 +7,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ryspay.onelabfinalproject.R
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.base.entity.PhotoItemUI
 import kotlinx.android.synthetic.main.item_photo.view.*
 import java.lang.NullPointerException
 
-class PhotosAdapter: ListAdapter<PhotoItemUI, PhotosAdapter.PhotoViewHolder>(diffUtil) {
+class PhotosAdapter(
+    private val clickListener: PhotoClickListener
+): ListAdapter<PhotoItemUI, PhotosAdapter.PhotoViewHolder>(diffUtil) {
     class PhotoViewHolder(view: View): RecyclerView.ViewHolder(view)
 
     companion object{
@@ -38,11 +41,22 @@ class PhotosAdapter: ListAdapter<PhotoItemUI, PhotosAdapter.PhotoViewHolder>(dif
         if (item == null){
             throw NullPointerException()
         }
-        Glide.with(holder.itemView.context)
-            .load(item.raw_url)
-            .centerCrop()
-            .error(R.drawable.image_placeholder)
-            .into(holder.itemView.photoImageView)
+
+//        Glide.with(holder.itemView.context)
+//            .load(item.raw_url)
+//            .diskCacheStrategy(DiskCacheStrategy.ALL)
+//            .centerCrop()
+//            .fitCenter()
+//            .error(R.drawable.image_placeholder)
+//            .into(holder.itemView.photoImageView)
+
+        holder.itemView.test_text.text = item.raw_url
+
+        holder.itemView.setOnClickListener { clickListener.onPhotoCLick(item.id) }
     }
+}
+
+interface PhotoClickListener {
+    fun onPhotoCLick(id: String)
 }
 

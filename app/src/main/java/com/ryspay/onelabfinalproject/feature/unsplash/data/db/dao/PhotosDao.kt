@@ -7,9 +7,12 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PhotosDao {
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun savePhotos(photos: List<PhotoLocal>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun savePhotos(photos: List<PhotoLocal>)
 
     @Query("select * from $PhotoLocalTable")
-    fun getPhotos(): Flow<List<PhotoLocal>>
+    fun getPhotos(): List<PhotoLocal>
+
+    @Query("delete from $PhotoLocalTable")
+    fun deleteAllPhotos()
 }

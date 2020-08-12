@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".feature.unsplash.presentation.details.DetailActivity">
     <ImageView
+        android:id="@+id/detailPhotoImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:src="@drawable/place_holder"
@@ -15,7 +16,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/dimen_16dp"
         android:layout_marginEnd="@dimen/dimen_16dp"
-        android:layout_marginTop="@dimen/dimen_10dp"/>
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:contentDescription="@string/detailed_image"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constaraint_layout"
         android:layout_width="match_parent"
@@ -38,5 +40,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/loading_template"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

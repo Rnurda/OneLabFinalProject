@@ -4,11 +4,13 @@ import com.ryspay.onelabfinalproject.feature.unsplash.domain.entity.DetailPhotoD
 import com.ryspay.onelabfinalproject.feature.unsplash.domain.entity.PhotoDomain
 
 interface PhotosRepository {
-    suspend fun getPhotos(
+    suspend fun getPhotos(): List<PhotoDomain>
+
+    suspend fun fetchPhotos(
         page: Int,
         per_page: Int,
         order_by: String
-    ): List<PhotoDomain>
+    )
 
     suspend fun getPhoto(
         photo_id: String

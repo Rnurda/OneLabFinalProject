@@ -12,9 +12,9 @@ import retrofit2.http.QueryMap
 interface UnsplashPhotoApi {
     @GET("photos")
     suspend fun getPhotos(
-        @Query("page") page: Int = 1,
-        @Query("per_page") per_page: Int = 30,
-        @Query("order_by") order_by: String = Const.ORDER_BY_LATEST
+        @Query("page") page: Int,
+        @Query("per_page") per_page: Int,
+        @Query("order_by") order_by: String
     ): List<PhotoRemoteDTO>
 
     @GET("photos/{photo_id}")
@@ -25,9 +25,9 @@ interface UnsplashPhotoApi {
     @GET("/search/photos")
     suspend fun searchPhotos(
         @Query("query") query: String,
-        @Query("page") page: Int = 1,
-        @Query("per_page") per_page: Int = 30,
-        @Query("order_by") order_by: String = Const.ORDER_BY_RELEVANT,
+        @Query("page") page: Int,
+        @Query("per_page") per_page: Int,
+        @Query("order_by") order_by: String,
         @QueryMap map: HashMap<String, String>
     ): SearchPhotosRemoteDTO
 }
