@@ -8,8 +8,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.ryspay.onelabfinalproject.R
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.details.entity.DetailPhotoItemUI
+import kotlinx.android.synthetic.main.bottom_sheet_dialog.*
 import kotlinx.android.synthetic.main.loading_template.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -35,6 +37,9 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
+        val sheetBehavior = BottomSheetBehavior.from(bottom_sheet)
+        sheetBehavior.isHideable = false
 
         initObserver()
     }
