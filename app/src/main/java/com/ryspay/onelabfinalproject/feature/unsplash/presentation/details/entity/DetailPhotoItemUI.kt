@@ -16,5 +16,6 @@ data class DetailPhotoItemUI(
     val focal_length: String,
     val iso: Int,
     val make: String,
-    val model: String
+    val model: String,
+    val img_url: String
 ): Parcelable

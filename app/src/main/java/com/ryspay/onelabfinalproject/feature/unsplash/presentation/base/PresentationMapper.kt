@@ -28,6 +28,7 @@ fun DetailPhotoDomain.toPresentationModel(): DetailPhotoItemUI{
         focal_length = focal_length,
         iso = iso,
         make = make,
-        model = model
+        model = model,
+        img_url = img_url
     )
 }

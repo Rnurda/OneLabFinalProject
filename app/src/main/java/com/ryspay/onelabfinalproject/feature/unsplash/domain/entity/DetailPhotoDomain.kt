@@ -12,5 +12,6 @@ data class DetailPhotoDomain(
     val focal_length: String,
     val iso: Int,
     val make: String,
-    val model: String
+    val model: String,
+    val img_url: String
 )

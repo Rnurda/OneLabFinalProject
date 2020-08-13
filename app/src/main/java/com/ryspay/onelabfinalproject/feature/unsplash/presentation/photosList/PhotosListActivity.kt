@@ -40,8 +40,8 @@ class PhotosListActivity : AppCompatActivity(), PhotoClickListener {
 
     private fun initListeners(){
         searchFabBtn.setOnClickListener {
-//            viewModel.onSearchActivityNavigationEvent()
-            viewModel.onRefresh(ORDER_BY_POPULAR)
+            viewModel.onSearchActivityNavigationEvent()
+//            viewModel.onRefresh(ORDER_BY_POPULAR)
         }
     }
 

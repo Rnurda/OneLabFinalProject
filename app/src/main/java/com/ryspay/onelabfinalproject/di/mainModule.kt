@@ -11,6 +11,7 @@ import com.ryspay.onelabfinalproject.feature.unsplash.domain.PhotosRepository
 import com.ryspay.onelabfinalproject.feature.unsplash.domain.usecases.*
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.details.DetailViewModel
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.photosList.PhotosListViewModel
+import com.ryspay.onelabfinalproject.feature.unsplash.presentation.search.SearchViewModel
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -90,6 +91,11 @@ val mainModule = module {
             repository = get()
         )
     }
+    factory {
+        SearchPhotoUseCase(
+            repository = get()
+        )
+    }
 
     viewModel {
         PhotosListViewModel(
@@ -101,6 +107,12 @@ val mainModule = module {
         DetailViewModel(
             photo_id = photo_id,
             getDetailedInfoPhotoUseCase = get()
+        )
+    }
+
+    viewModel {
+        SearchViewModel(
+            searchPhotoUseCase = get()
         )
     }
 

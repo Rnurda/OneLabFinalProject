@@ -8,9 +8,11 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.ryspay.onelabfinalproject.R
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.details.entity.DetailPhotoItemUI
+import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_dialog.*
 import kotlinx.android.synthetic.main.loading_template.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -62,6 +64,17 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun fillData(photo: DetailPhotoItemUI) {
-        //ToDo
+        likes_tv.text = "${photo.likes.toString()} likes"
+        downloads_tv.text = "${photo.downloads} downloads"
+        if(!photo.city.isNullOrBlank()) {
+            photo_taken_from_tv.text = "Photo taked in ${photo.city}, ${photo.country}"
+        }
+        description_tv.text = photo.description
+
+        Glide.with(this)
+            .load(photo.img_url)
+            .centerCrop()
+            .fitCenter()
+            .into(detailPhotoImageView)
     }
 }

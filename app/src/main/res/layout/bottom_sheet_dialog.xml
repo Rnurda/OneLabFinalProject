@@ -24,69 +24,59 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_baseline_keyboard_arrow_up_24"/>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:padding="@dimen/dimen_10dp">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ic_like"
+                android:layout_width="@dimen/dimen_40dp"
+                android:layout_height="@dimen/dimen_40dp"
+                android:src="@drawable/ic_baseline_favorite_24"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/likes_tv"
+                tools:text="100 likes"
+                style="@style/text_style"
+                android:layout_marginStart="@dimen/dimen_16dp"
+                app:layout_constraintStart_toEndOf="@id/ic_like"
+                app:layout_constraintTop_toTopOf="@id/ic_like"
+                app:layout_constraintBottom_toBottomOf="@id/ic_like"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ic_download"
+                android:layout_width="@dimen/dimen_40dp"
+                android:layout_height="@dimen/dimen_40dp"
+                android:src="@drawable/ic_baseline_cloud_download_24"
+                app:layout_constraintStart_toEndOf="@id/likes_tv"
+                app:layout_constraintTop_toTopOf="@id/ic_like"
+                app:layout_constraintBottom_toBottomOf="@id/ic_like"
+                android:layout_marginStart="@dimen/dimen_40dp"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/downloads_tv"
+                style="@style/text_style"
+                tools:text="100 downloads"
+                android:layout_marginStart="@dimen/dimen_16dp"
+                app:layout_constraintStart_toEndOf="@id/ic_download"
+                app:layout_constraintTop_toTopOf="@id/ic_download"
+                app:layout_constraintBottom_toBottomOf="@id/ic_download"/>
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"/>
+                android:id="@+id/photo_taken_from_tv"
+                style="@style/text_style"
+                app:layout_constraintTop_toBottomOf="@id/ic_like"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                tools:text="Photo taken in Paris, France"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/description_tv"
+                tools:text="Description"
+                style="@style/text_style"
+                app:layout_constraintTop_toBottomOf="@id/photo_taken_from_tv"
+                app:layout_constraintStart_toStartOf="parent"
+                />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textAlignment="center"/>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

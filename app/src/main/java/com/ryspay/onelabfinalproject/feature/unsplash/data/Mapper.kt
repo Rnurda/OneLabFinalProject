@@ -29,7 +29,8 @@ fun DetailPhotoRemoteDTO.toDomainModel(): DetailPhotoDomain {
         focal_length = exif?.focal_length?:"",
         iso = exif?.iso?:-1,
         make = exif?.make?:"",
-        model = exif?.model?:""
+        model = exif?.model?:"",
+        img_url = urls?.raw?:""
     )
 }
 
