@@ -3,6 +3,7 @@ package com.ryspay.onelabfinalproject.feature.unsplash.presentation.base.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,7 @@ import java.lang.NullPointerException
 
 class PhotosAdapter(
     private val clickListener: PhotoClickListener
-): ListAdapter<PhotoItemUI, PhotosAdapter.PhotoViewHolder>(diffUtil) {
+): PagedListAdapter<PhotoItemUI, PhotosAdapter.PhotoViewHolder>(diffUtil) {
     class PhotoViewHolder(view: View): RecyclerView.ViewHolder(view)
 
     companion object{

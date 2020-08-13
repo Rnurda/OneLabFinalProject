@@ -2,17 +2,23 @@ package com.ryspay.onelabfinalproject.feature.unsplash.presentation.photosList
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.ryspay.onelabfinalproject.R
+import com.ryspay.onelabfinalproject.feature.unsplash.data.paging.NetworkState
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.base.adapter.PhotoClickListener
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.base.adapter.PhotosAdapter
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.base.entity.PhotoItemUI
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.details.DetailActivity
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.search.SearchActivity
+import com.ryspay.onelabfinalproject.utils.Const.Companion.ORDER_BY_LATEST
+import com.ryspay.onelabfinalproject.utils.Const.Companion.ORDER_BY_POPULAR
 import kotlinx.android.synthetic.main.activity_photos_list.*
 import kotlinx.android.synthetic.main.loading_template.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,7 +40,8 @@ class PhotosListActivity : AppCompatActivity(), PhotoClickListener {
 
     private fun initListeners(){
         searchFabBtn.setOnClickListener {
-            viewModel.onSearchActivityNavigationEvent()
+//            viewModel.onSearchActivityNavigationEvent()
+            viewModel.onRefresh(ORDER_BY_POPULAR)
         }
     }
 
@@ -43,32 +50,17 @@ class PhotosListActivity : AppCompatActivity(), PhotoClickListener {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             photoAdapter = PhotosAdapter(this@PhotosListActivity)
             adapter = photoAdapter
-
-            addOnScrollListener(object: RecyclerView.OnScrollListener(){
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    if (!recyclerView.canScrollVertically(1)){
-                        viewModel.onNextPage()
-                    }
-                    else if (!recyclerView.canScrollVertically(-1)){
-                        viewModel.onPreviousPage()
-                    }
-                }
-            })
         }
     }
 
     private fun initObservers(){
-        viewModel.photos.observe(this, ::handlePhotosState)
         viewModel.navigationState.observe(this, ::handleNavigationState)
+        viewModel.pagingState.observe(this, ::handlePagingState)
+        viewModel.pagedPhotos.observe(this, ::handlePagedPhotos)
     }
 
-    private fun handlePhotosState(state: PhotosState<List<PhotoItemUI>>){
-        loaderLayout.isVisible = state is PhotosState.Loading
-        when(state) {
-            is PhotosState.Success -> fillRecycler(state.data)
-            is PhotosState.Error -> showToast(state.message)
-        }
+    private fun handlePagedPhotos(list: PagedList<PhotoItemUI?>){
+        photoAdapter.submitList(list)
     }
 
     private fun handleNavigationState(state: NavigationState) {
@@ -78,8 +70,12 @@ class PhotosListActivity : AppCompatActivity(), PhotoClickListener {
         }
     }
 
-    private fun fillRecycler(items: List<PhotoItemUI>){
-        photoAdapter.submitList(items)
+    private fun handlePagingState(state: NetworkState){
+        loaderLayout.isVisible = state is NetworkState.Loading
+        when(state){
+            is NetworkState.Success -> showToast("page loaded")
+            is NetworkState.Error -> showToast(state.msg)
+        }
     }
 
     private fun showToast(message: String){

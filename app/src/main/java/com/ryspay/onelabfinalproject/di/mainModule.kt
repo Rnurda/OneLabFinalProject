@@ -1,16 +1,14 @@
 package com.ryspay.onelabfinalproject.di
 
 import com.ryspay.onelabfinalproject.api.UnsplashPhotoApi
-import com.ryspay.onelabfinalproject.feature.unsplash.data.PhotoPageKeyedDataSource
+import com.ryspay.onelabfinalproject.feature.unsplash.data.paging.PhotosPageKeyedDataSource
 import com.ryspay.onelabfinalproject.feature.unsplash.data.PhotosRepositoryImpl
 import com.ryspay.onelabfinalproject.feature.unsplash.data.db.PhotosLocalDataSource
 import com.ryspay.onelabfinalproject.feature.unsplash.data.db.RoomPhotosLocalDataSource
 import com.ryspay.onelabfinalproject.feature.unsplash.data.remote.PhotosRemoteDataSource
 import com.ryspay.onelabfinalproject.feature.unsplash.data.remote.RetrofitPhotosRemoteDataSource
 import com.ryspay.onelabfinalproject.feature.unsplash.domain.PhotosRepository
-import com.ryspay.onelabfinalproject.feature.unsplash.domain.usecases.FetchPhotosUseCase
-import com.ryspay.onelabfinalproject.feature.unsplash.domain.usecases.GetDetailedInfoPhotoUseCase
-import com.ryspay.onelabfinalproject.feature.unsplash.domain.usecases.GetPhotosUseCase
+import com.ryspay.onelabfinalproject.feature.unsplash.domain.usecases.*
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.details.DetailViewModel
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.photosList.PhotosListViewModel
 import okhttp3.Interceptor
@@ -82,34 +80,20 @@ val mainModule = module {
     }
 
     factory {
-        FetchPhotosUseCase(
-            repository = get()
-        )
-    }
-
-    factory {
         GetDetailedInfoPhotoUseCase(
             repository = get()
         )
     }
 
     factory {
-        GetPhotosUseCase(
+        GetPagedPhotosUseCase(
             repository = get()
-        )
-    }
-
-    factory {
-        PhotoPageKeyedDataSource(
-            photosDao = get(),
-            photoApi = get()
         )
     }
 
     viewModel {
         PhotosListViewModel(
-            getPhotosUseCase = get(),
-            fetchPhotosUseCase = get()
+            getPagedPhotosUseCase = get()
         )
     }
 
