@@ -1,13 +1,14 @@
 package com.ryspay.onelabfinalproject.feature.unsplash.domain.usecases
 
 import com.ryspay.onelabfinalproject.feature.unsplash.data.Listing
+import com.ryspay.onelabfinalproject.feature.unsplash.data.SearchListing
 import com.ryspay.onelabfinalproject.feature.unsplash.domain.PhotosRepository
 import com.ryspay.onelabfinalproject.feature.unsplash.presentation.base.entity.PhotoItemUI
 
-class GetPagedPhotosUseCase(
+class GetSearchPagedPhotosUseCase(
     private val repository: PhotosRepository
 ) {
-    operator fun invoke(): Listing<PhotoItemUI?>{
-        return repository.getPagedPhotos()
+    operator fun invoke(): SearchListing<PhotoItemUI?> {
+        return repository.getSearchPagedPhotos()
     }
 }

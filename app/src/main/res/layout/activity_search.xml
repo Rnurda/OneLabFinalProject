@@ -14,7 +14,7 @@
         app:startIconDrawable="@drawable/ic_search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/filter_icon"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/dimen_16dp"
         android:layout_marginEnd="@dimen/dimen_16dp"
         android:layout_marginTop="@dimen/dimen_10dp">
@@ -27,20 +27,43 @@
             android:singleLine="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/filter_icon"
-        android:layout_width="@dimen/dimen_40dp"
-        android:layout_height="@dimen/dimen_40dp"
-        android:src="@drawable/ic_filter"
-        app:layout_constraintTop_toTopOf="@id/text_field"
-        app:layout_constraintBottom_toBottomOf="@id/text_field"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/dimen_10dp"/>
+    <TextView
+        android:id="@+id/filter_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/text_style"
+        android:text="Filter: "
+        android:layout_marginStart="@dimen/dimen_16dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_field"
+        />
+
+    <RadioGroup
+        android:id="@+id/order_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="@id/filter_tv"
+        app:layout_constraintBottom_toBottomOf="@id/filter_tv"
+        app:layout_constraintStart_toEndOf="@id/filter_tv">
+        <RadioButton
+            android:id="@+id/latest_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Latest"/>
+        <RadioButton
+            android:id="@+id/relevant_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Relevant"/>
+    </RadioGroup>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/text_field"
+        app:layout_constraintTop_toBottomOf="@id/order_radio_group"
         android:layout_marginStart="@dimen/dimen_16dp"
         android:layout_marginEnd="@dimen/dimen_16dp"
         android:layout_marginTop="@dimen/dimen_10dp"/>

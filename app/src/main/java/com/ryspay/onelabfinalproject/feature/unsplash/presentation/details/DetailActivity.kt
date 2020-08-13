@@ -1,11 +1,15 @@
 package com.ryspay.onelabfinalproject.feature.unsplash.presentation.details
 
+import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import com.bumptech.glide.Glide
@@ -17,6 +21,11 @@ import kotlinx.android.synthetic.main.bottom_sheet_dialog.*
 import kotlinx.android.synthetic.main.loading_template.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class DetailActivity : AppCompatActivity() {
 
@@ -25,6 +34,8 @@ class DetailActivity : AppCompatActivity() {
             intent?.getStringExtra(PHOTO_ID_INTENT)
         )
     }
+
+    private var photoDownloadUrl: String? = null
 
     companion object{
         const val PHOTO_ID_INTENT = "photo_id"
@@ -43,18 +54,32 @@ class DetailActivity : AppCompatActivity() {
         val sheetBehavior = BottomSheetBehavior.from(bottom_sheet)
         sheetBehavior.isHideable = false
 
+        initListeners()
         initObserver()
     }
 
     private fun initObserver(){
-        viewModel.detailPhoto.observe(this, ::handleDetails)
+        viewModel.photoDetailPhoto.observe(this, ::handleDetails)
+        viewModel.detailState.observe(this, androidx.lifecycle.Observer {
+            when(it){
+                is DetailState.DownloadImageState -> saveUrlImage(it.url)
+            }
+        })
+    }
+    
+    private fun initListeners(){
+        ic_download.setOnClickListener {
+            photoDownloadUrl?.let{
+                viewModel.onDownloadClicked(it)
+            }
+        }
     }
 
-    private fun handleDetails(state: DetailState<DetailPhotoItemUI>){
-        loaderLayout.isVisible = state is DetailState.Loading
-        when(state) {
-            is DetailState.Error -> showToast(state.message)
-            is DetailState.Success -> fillData(state.data)
+    private fun handleDetails(statePhoto: PhotoDetailState<DetailPhotoItemUI>){
+        loaderLayout.isVisible = statePhoto is PhotoDetailState.Loading
+        when(statePhoto) {
+            is PhotoDetailState.Error -> showToast(statePhoto.message)
+            is PhotoDetailState.Success -> fillData(statePhoto.data)
         }
     }
 
@@ -64,9 +89,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun fillData(photo: DetailPhotoItemUI) {
-        likes_tv.text = "${photo.likes.toString()} likes"
+        likes_tv.text = "${photo.likes} likes"
         downloads_tv.text = "${photo.downloads} downloads"
-        if(!photo.city.isNullOrBlank()) {
+        if(!photo.city.isBlank()) {
             photo_taken_from_tv.text = "Photo taked in ${photo.city}, ${photo.country}"
         }
         description_tv.text = photo.description
@@ -76,5 +101,53 @@ class DetailActivity : AppCompatActivity() {
             .centerCrop()
             .fitCenter()
             .into(detailPhotoImageView)
+
+        photoDownloadUrl = photo.img_url
+    }
+
+    private fun saveUrlImage(url: String) {
+        if (isExternalStorageWritable()) {
+            saveImage(url)
+        } else {
+            showToast("Don't have permission")
+        }
+    }
+
+    private fun saveImage(url: String) {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val fname = "Unsplush_$timeStamp"
+        downloadImageNew(fname, url)
+    }
+
+    /* Checks if external storage is available for read and write */
+    private fun isExternalStorageWritable(): Boolean {
+        val state: String = Environment.getExternalStorageState()
+        return Environment.MEDIA_MOUNTED == state
+    }
+
+    private fun downloadImageNew(
+        filename: String,
+        downloadUrlOfImage: String
+    ) {
+        try {
+            val dm =
+                getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            val downloadUri: Uri = Uri.parse(downloadUrlOfImage)
+            val request = DownloadManager.Request(downloadUri)
+            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+                .setAllowedOverRoaming(false)
+                .setTitle(filename)
+                .setMimeType("image/jpeg") // Your file type. You can use this code to download other file types also.
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setDestinationInExternalPublicDir(
+                    Environment.DIRECTORY_PICTURES,
+                    File.separator + filename + ".jpg"
+                )
+            dm.enqueue(request)
+            Toast.makeText(this, "Image download started.", Toast.LENGTH_SHORT).show()
+        } catch (e: java.lang.Exception) {
+            Log.d("saveIamge", e.message?:"")
+            Toast.makeText(this, "Image download failed.", Toast.LENGTH_SHORT).show()
+        }
     }
 }

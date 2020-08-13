@@ -12,10 +12,8 @@ import com.ryspay.onelabfinalproject.feature.unsplash.presentation.base.entity.P
 import com.ryspay.onelabfinalproject.utils.Const.Companion.ORDER_BY_LATEST
 
 class PhotosListViewModel(
-    private val getPagedPhotosUseCase: GetPagedPhotosUseCase
+    getPagedPhotosUseCase: GetPagedPhotosUseCase
 ): ViewModel() {
-
-    private var orderBy = ORDER_BY_LATEST
 
     private val _navigationState = MutableLiveData<NavigationState>()
     val navigationState: LiveData<NavigationState> get() = _navigationState
@@ -25,11 +23,10 @@ class PhotosListViewModel(
     val pagingState = switchMap(pagedPhotosList){ it.networkState }
 
     init {
-        pagedPhotosList.value = getPagedPhotosUseCase(orderBy)
+        pagedPhotosList.value = getPagedPhotosUseCase()
     }
 
     fun onRefresh(orderBy: String) {
-        this.orderBy = orderBy
         pagedPhotosList.value?.refresh?.invoke(orderBy)
     }
 

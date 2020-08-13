@@ -1,6 +1,7 @@
 package com.ryspay.onelabfinalproject.feature.unsplash.data
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
@@ -8,6 +9,7 @@ import androidx.paging.PagedList
 import com.ryspay.onelabfinalproject.feature.unsplash.data.db.PhotosLocalDataSource
 import com.ryspay.onelabfinalproject.feature.unsplash.data.paging.NetworkState
 import com.ryspay.onelabfinalproject.feature.unsplash.data.paging.PhotosPageKeyedDataSource
+import com.ryspay.onelabfinalproject.feature.unsplash.data.paging.SearchPhotosPageKeyedDataSource
 import com.ryspay.onelabfinalproject.feature.unsplash.data.remote.PhotosRemoteDataSource
 import com.ryspay.onelabfinalproject.feature.unsplash.domain.PhotosRepository
 import com.ryspay.onelabfinalproject.feature.unsplash.domain.entity.DetailPhotoDomain
@@ -22,20 +24,11 @@ class PhotosRepositoryImpl(
     private val localDataSource: PhotosLocalDataSource
 ): PhotosRepository {
 
-    override suspend fun getPhotos(): List<PhotoDomain> =
-        localDataSource.getPhotos().map { it.toDomainModel() }
-
-    override suspend fun fetchPhotos(page: Int, per_page: Int, order_by: String) {
-        if (checkNetworkConnection(context)){
-            val photoResponse = remoteDataSource.getPhotos(
-                page = page,
-                per_page = per_page,
-                order_by = order_by
-            )
-
-            localDataSource.deleteAllPhotos()
-            localDataSource.savePhotos(photoResponse.map { it.toLocalEntity() })
-        }
+    val pageConfig by lazy {
+        PagedList.Config.Builder()
+            .setPageSize(Const.DEFAULT_PER_PAGE)
+            .setEnablePlaceholders(true)
+            .build()
     }
 
     override suspend fun getPhoto(photo_id: String): DetailPhotoDomain {
@@ -68,28 +61,12 @@ class PhotosRepositoryImpl(
         }
     }
 
-    override fun getPhotosFactory(
-        order_by: String
-    ): PhotosPageKeyedDataSource.Factory {
-        return PhotosPageKeyedDataSource.Factory(
-            localDataSource = localDataSource,
-            remoteDataSource = remoteDataSource,
-            context = context
-        )
-    }
-
-    override fun getPagedPhotos(order_by: String) : Listing<PhotoItemUI?>{
+    override fun getPagedPhotos() : Listing<PhotoItemUI?>{
         val factory = PhotosPageKeyedDataSource.Factory(
             localDataSource = localDataSource,
             remoteDataSource = remoteDataSource,
             context = context
         )
-
-        val pageConfig =
-            PagedList.Config.Builder()
-                .setPageSize(Const.DEFAULT_PER_PAGE)
-                .setEnablePlaceholders(true)
-                .build()
 
         val pagedList = LivePagedListBuilder(factory, pageConfig)
                 .build()
@@ -106,7 +83,35 @@ class PhotosRepositoryImpl(
         )
     }
 
+    override fun getSearchPagedPhotos(): SearchListing<PhotoItemUI?> {
+        val factory = SearchPhotosPageKeyedDataSource.Factory(
+            remoteDataSource = remoteDataSource
+        )
+
+        val pagedList = LivePagedListBuilder(factory, pageConfig)
+            .build()
+
+        return SearchListing(
+            pagedList = pagedList,
+            networkState = Transformations.switchMap(factory.mutableDataSource) {
+                it.networkState
+            },
+            refresh = { order_by, query ->
+                Log.d("PhotoRepository.kt", "invalidated")
+                factory.order_by = order_by
+                factory.query = query
+                factory.mutableDataSource.value?.invalidate()
+            }
+        )
+    }
+
 }
+
+data class SearchListing<T>(
+    val pagedList: LiveData<PagedList<T>>,
+    val networkState: LiveData<NetworkState>,
+    val refresh: (orderBy: String, query: String) -> Unit
+)
 
 data class Listing<T>(
     val pagedList: LiveData<PagedList<T>>,

@@ -3,7 +3,6 @@ package com.ryspay.onelabfinalproject.api
 import com.ryspay.onelabfinalproject.feature.unsplash.data.remote.dto.DetailPhotoRemoteDTO
 import com.ryspay.onelabfinalproject.feature.unsplash.data.remote.dto.PhotoRemoteDTO
 import com.ryspay.onelabfinalproject.feature.unsplash.data.remote.dto.SearchPhotosRemoteDTO
-import com.ryspay.onelabfinalproject.utils.Const
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

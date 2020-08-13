@@ -91,8 +91,9 @@ val mainModule = module {
             repository = get()
         )
     }
+
     factory {
-        SearchPhotoUseCase(
+        GetSearchPagedPhotosUseCase(
             repository = get()
         )
     }
@@ -112,7 +113,7 @@ val mainModule = module {
 
     viewModel {
         SearchViewModel(
-            searchPhotoUseCase = get()
+            getSearchPagedPhotosUseCase = get()
         )
     }
 
